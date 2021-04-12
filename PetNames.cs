@@ -47,25 +47,20 @@ namespace seleniumPractice
         }
         
         [Test]
-        public void Site_ClickAnotherEmail_AnotherEmailLinkIsHidden()//todo
+        public void Site_ClickAnotherEmail_AnotherEmailLinkIsHiddenAndEmailInputIsEmpty()//todo
         {
             driver.Navigate().GoToUrl("https://qa-course.kontur.host/selenium-practice/");
             driver.FindElement(emailInputLocator).SendKeys(validEmail);
             driver.FindElement(sendButtonLocator).Click();
             driver.FindElement(anotherEmailLinkLocator).Click();
-            Assert.IsFalse(driver.FindElement(anotherEmailLinkLocator).Displayed, "Ссылка для сброса почты не исчезла");//todo
-        } 
-        
-        [Test]
-        public void Site_ClickAnotherEmail_EmailInputIsEmpty()//todo
-        {
-            driver.Navigate().GoToUrl("https://qa-course.kontur.host/selenium-practice/");
-            driver.FindElement(emailInputLocator).SendKeys(validEmail);
-            driver.FindElement(sendButtonLocator).Click();
-            driver.FindElement(anotherEmailLinkLocator).Click();
-            Assert.AreEqual(string.Empty, driver.FindElement(emailInputLocator).Text, "Поле для ввода почты не очистилось");//todo
+            Assert.Multiple(() =>
+            {
+                Assert.IsFalse(driver.FindElement(anotherEmailLinkLocator).Displayed, "Ссылка для сброса почты не исчезла");//todo
+                Assert.AreEqual(string.Empty, driver.FindElement(emailInputLocator).Text, "Поле для ввода почты не очистилось");//todo
+            });
+            
         }
-        
+
         [Test]
         public void Site_ClickFemaleRadio_FemaleTextIsShown()//todo
         {
