@@ -6,6 +6,7 @@ using System.Linq;
 
 namespace seleniumPractice
 {
+    [TestFixture]
     public class PetNames
     {
         public ChromeDriver driver;
@@ -19,7 +20,7 @@ namespace seleniumPractice
         public By boyRadioLocator = By.Id("boy");
         public By girlRadioLocator = By.Id("girl");
         public By resultTextLocator = By.ClassName("result-text");
-
+        
         public void InputValidEmailAndSend()
         {
             driver.FindElement(emailInputLocator).SendKeys(validEmail);
@@ -64,7 +65,7 @@ namespace seleniumPractice
         {
             driver.FindElement(girlRadioLocator).Click();
             InputValidEmailAndSend();
-            Assert.AreEqual("Хорошо, мы пришлём имя для вашей девочки на e-mail:", driver.FindElement(resultTextLocator).Text, "Неверное сообщение если выбрать женский вариант имени"); //todo
+            Assert.AreEqual("Хорошо, мы пришлём имя для вашей девочки на e-mail:", driver.FindElement(resultTextLocator).Text, "Неверное сообщение если выбрать женский вариант имени"); 
         }
         
         [Test]
@@ -72,7 +73,7 @@ namespace seleniumPractice
         {
             driver.FindElement(boyRadioLocator).Click();
             InputValidEmailAndSend();
-            Assert.AreEqual("Хорошо, мы пришлём имя для вашего мальчика на e-mail:", driver.FindElement(resultTextLocator).Text, "Неверное сообщение если выбрать мужской вариант имени"); //todo
+            Assert.AreEqual("Хорошо, мы пришлём имя для вашего мальчика на e-mail:", driver.FindElement(resultTextLocator).Text, "Неверное сообщение если выбрать мужской вариант имени"); 
         }
 
         [Test]
@@ -80,7 +81,7 @@ namespace seleniumPractice
         {
             Assert.Multiple(() =>
             {
-                foreach (var email in new String[]
+                foreach (var email in new[]
                 {
                    "email@example.com",
                    "firstname.lastname@example.com",
@@ -99,6 +100,8 @@ namespace seleniumPractice
                    "much.”more\\ unusual”@example.com",
                    "very.unusual.”@”.unusual.com@example.com",
                    "very.”(),:;<>[]”.VERY.”very@\\\\ \"very”.unusual@strange.example.com",
+                   //255 symbols
+                   "longEmailThatSouldBeAllowedqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq@email.com",
                 })
                 {
                     if (!driver.FindElement(sendButtonLocator).Displayed)
@@ -138,6 +141,9 @@ namespace seleniumPractice
                    "”(),:;<>[\\]@example.com",
                    "just”not”right@example.com",
                    "this\\ is\"really\"not\\allowed@example.com",
+                   //256 symbols
+                   "longEmailThatSouldBeAllowedqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq@email.com",
+
                 })
                 {
                     if (!driver.FindElement(sendButtonLocator).Displayed)
