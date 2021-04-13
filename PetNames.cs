@@ -83,8 +83,9 @@ namespace seleniumPractice
             {
                 foreach (var email in new[]
                 {
-                   "email@example.com",
-                   "firstname.lastname@example.com",
+                    "email@example.com",
+                    "ачкак@example.com",
+                    "firstname.lastname@example.com",
                    "email@subdomain.example.com",
                    "firstname+lastname@example.com",
                    "email@123.123.123.123",
@@ -119,7 +120,7 @@ namespace seleniumPractice
         {
             Assert.Multiple(() =>
             {
-                foreach (var email in new String[]
+                foreach (var email in new[]
                 {
                    "plainaddress",
                    "#@%^%#$@#$@#.com",
@@ -142,8 +143,7 @@ namespace seleniumPractice
                    "just”not”right@example.com",
                    "this\\ is\"really\"not\\allowed@example.com",
                    //256 symbols
-                   "longEmailThatSouldBeAllowedqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq@email.com",
-
+                   "longEmailThatSouldntBeAllowedqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq@email.com",
                 })
                 {
                     if (!driver.FindElement(sendButtonLocator).Displayed)
