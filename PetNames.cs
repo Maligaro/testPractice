@@ -99,6 +99,8 @@ namespace seleniumPractice
                    "much.”more\\ unusual”@example.com",
                    "very.unusual.”@”.unusual.com@example.com",
                    "very.”(),:;<>[]”.VERY.”very@\\\\ \"very”.unusual@strange.example.com",
+                   //255 symbols
+                   "longEmailThatSouldBeAllowedqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq@email.com",
                 })
                 {
                     if (!driver.FindElement(sendButtonLocator).Displayed)
@@ -138,6 +140,9 @@ namespace seleniumPractice
                    "”(),:;<>[\\]@example.com",
                    "just”not”right@example.com",
                    "this\\ is\"really\"not\\allowed@example.com",
+                   //256 symbols
+                   "longEmailThatSouldBeAllowedqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq@email.com",
+
                 })
                 {
                     if (!driver.FindElement(sendButtonLocator).Displayed)
