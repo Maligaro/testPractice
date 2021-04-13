@@ -15,7 +15,7 @@ namespace seleniumPractice
 
         public By emailInputLocator = By.Name("email");
         public By sendButtonLocator = By.Id("sendMe");
-        public By emailResultTextLacator = By.ClassName("your-email");
+        public By resultEmailTextLacator = By.ClassName("your-email");
         public By anotherEmailLinkLocator = By.Id("anotherEmail");
         public By boyRadioLocator = By.Id("boy");
         public By girlRadioLocator = By.Id("girl");
@@ -42,19 +42,21 @@ namespace seleniumPractice
             InputValidEmailAndSend();
             Assert.Multiple(() =>
             {
-                Assert.AreEqual(validEmail, driver.FindElement(emailResultTextLacator).Text, "Письмо отправлено не на тот email");
+                Assert.AreEqual(validEmail, driver.FindElement(resultEmailTextLacator).Text, "Письмо отправлено не на тот email");
                 Assert.False(driver.FindElement(sendButtonLocator).Displayed, "Кнопка отправить не была скрыта после отправки формы");
             });
         }
         
         [Test]
-        public void Site_ClickAnotherEmail_AnotherEmailLinkIsHiddenAndEmailInputIsEmpty()
+        public void Site_ClickAnotherEmail_AllResultTextIsHiddenAndEmailInputIsEmpty()
         {
             InputValidEmailAndSend();
             driver.FindElement(anotherEmailLinkLocator).Click();
             Assert.Multiple(() =>
             {
                 Assert.IsFalse(driver.FindElement(anotherEmailLinkLocator).Displayed, "Ссылка \"указать другой e-mail\" не исчезла после нажатия");
+                Assert.AreEqual(0, driver.FindElements(resultTextLocator).Count, "Ссылка \"указать другой e-mail\" не исчезла после нажатия");
+                Assert.AreEqual(0, driver.FindElements(resultEmailTextLacator).Count, "Текст с email не скрыт не исчезла после нажатия");
                 Assert.AreEqual(string.Empty, driver.FindElement(emailInputLocator).Text, "Поле для ввода почты не очистилось после нажатия на \"указать другой e-mail\"");
             });
             
@@ -85,24 +87,24 @@ namespace seleniumPractice
                 {
                     "email@example.com",
                     "ачкак@example.com",
-                    "firstname.lastname@example.com",
-                   "email@subdomain.example.com",
-                   "firstname+lastname@example.com",
-                   "email@123.123.123.123",
-                   "email@[123.123.123.123]",
-                   "\"email\"@example.com",
-                   "1234567890@example.com",
-                   "email@example-one.com",
-                   "_______@example.com",
-                   "email@example.name",
-                   "email@example.museum",
-                   "email@example.co.jp",
-                   "firstname-lastname@example.com",
-                   "much.”more\\ unusual”@example.com",
-                   "very.unusual.”@”.unusual.com@example.com",
-                   "very.”(),:;<>[]”.VERY.”very@\\\\ \"very”.unusual@strange.example.com",
-                   //255 symbols
-                   "longEmailThatSouldBeAllowedqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq@email.com",
+                    "firstname.lastname@example.com", 
+                    "email@subdomain.example.com", 
+                    "firstname+lastname@example.com", 
+                    "email@123.123.123.123", 
+                    "email@[123.123.123.123]", 
+                    "\"email\"@example.com", 
+                    "1234567890@example.com", 
+                    "email@example-one.com",
+                    "_______@example.com",
+                    "email@example.name",
+                    "email@example.museum",
+                    "email@example.co.jp",
+                    "firstname-lastname@example.com",
+                    "much.”more\\ unusual”@example.com",
+                    "very.unusual.”@”.unusual.com@example.com",
+                    "very.”(),:;<>[]”.VERY.”very@\\\\ \"very”.unusual@strange.example.com",
+                    //255 symbols
+                    "longEmailThatSouldBeAllowedqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq@email.com",
                 })
                 {
                     if (!driver.FindElement(sendButtonLocator).Displayed)
@@ -122,28 +124,30 @@ namespace seleniumPractice
             {
                 foreach (var email in new[]
                 {
-                   "plainaddress",
-                   "#@%^%#$@#$@#.com",
-                   "@example.com",
-                   "Joe Smith <email@example.com>",
-                   "email.example.com",
-                   "email@example@example.com",
-                   ".email@example.com",
-                   "email.@example.com",
-                   "email..email@example.com",
-                   "あいうえお@example.com",
-                   "email@example.com (Joe Smith)",
-                   "email@example",
-                   "email@-example.com",
-                   "email@example.web",
-                   "email@111.222.333.44444",
-                   "email@example..com",
-                   "Abc..123@example.com",
-                   "”(),:;<>[\\]@example.com",
-                   "just”not”right@example.com",
-                   "this\\ is\"really\"not\\allowed@example.com",
-                   //256 symbols
-                   "longEmailThatSouldntBeAllowedqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq@email.com",
+                    "plainaddress",
+                    "#@%^%#$@#$@#.com",
+                    "@example.com",
+                    "@.",
+                    "Joe Smith <email@example.com>",
+                    "email.example.com",
+                    "email@example@example.com",
+                    ".email@example.com",
+                    "email.@example.com",
+                    "email..email@example.com",
+                    "あいうえお@example.com",
+                    "email@example.com (Joe Smith)",
+                    "email@example",
+                    "email@-example.com",
+                    "email@example.web",
+                    "email@111.222.333.44444",
+                    "email@example..com",
+                    "Abc..123@example.com",
+                    "”(),:;<>[\\]@example.com",
+                    "just”not”right@example.com",
+                    "this\\ is\"really\"not\\allowed@example.com",
+                    "veryunusual@strange.exampleexampleexampleexampleexampleexampleexampleexampleexampleexampleexampleexampleexampleexampleexampleexampleexampleexampleexampleexampleexampleexampleexampleexampleexampleexampleexampleexampleexampleexampleexampleexampleexampleexampleexampleexampleexampleexampleexampleexampleexampleexampleexampleexampleexampleexampleexampleexampleexampleexampleexampleexampleexampleexampleexampleexampleexampleexampleexampleexampleexampleexampleexampleexampleexampleexampleexampleexampleexampleexampleexampleexampleexampleexampleexampleexampleexampleexampleexampleexampleexampleexampleexampleexampleexampleexampleexampleexampleexampleexampleexampleexampleexampleexampleexampleexampleexampleexampleexampleexampleexampleexampleexampleexampleexampleexampleexampleexampleexampleexampleexampleexampleexampleexampleexampleexampleexampleexampleexampleexampleexampleexampleexampleexampleexampleexampleexampleexampleexampleexampleexampleexampleexampleexampleexampleexampleexampleexampleexampleexampleexampleexampleexampleexampleexampleexampleexampleexampleexampleexampleexampleexampleexampleexampleexampleexampleexampleexampleexampleexampleexampleexampleexampleexampleexampleexampleexampleexampleexampleexampleexampleexampleexampleexampleexampleexampleexampleexampleexampleexampleexampleexampleexampleexampleexampleexampleexampleexampleexampleexampleexampleexampleexampleexampleexampleexampleexampleexampleexampleexampleexampleexampleexampleexampleexampleexampleexampleexampleexampleexampleexampleexampleexampleexampleexampleexampleexampleexampleexampleexampleexampleexampleexampleexampleexampleexampleexampleexampleexampleexampleexampleexampleexampleexampleexampleexampleexampleexampleexampleexampleexampleexampleexampleexampleexampleexampleexampleexampleexampleexampleexampleexampleexampleexampleexampleexampleexampleexampleexampleexampleexampleexampleexampleexampleexampleexampleexampleexampleexampleexample.com",
+                    //256 symbols
+                    "longEmailThatSouldntBeAllowedqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq@email.com",
                 })
                 {
                     if (!driver.FindElement(sendButtonLocator).Displayed)
@@ -151,7 +155,7 @@ namespace seleniumPractice
                     driver.FindElement(emailInputLocator).Clear();
                     driver.FindElement(emailInputLocator).SendKeys(email);
                     driver.FindElement(sendButtonLocator).Click();
-                    Assert.IsTrue(driver.FindElement(sendButtonLocator).Displayed, "Принят невалидный  email: " + email);
+                    Assert.IsTrue(driver.FindElement(sendButtonLocator).Displayed, "Принят невалидный email: " + email);
                 }
             });
         }
