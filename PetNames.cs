@@ -86,6 +86,7 @@ namespace seleniumPractice
                 foreach (var email in new[]
                 {
                     "email@example.com",
+                    "eMaiL@example.com",
                     "ачкак@example.com",
                     "firstname.lastname@example.com", 
                     "email@subdomain.example.com", 
