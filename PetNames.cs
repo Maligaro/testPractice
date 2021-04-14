@@ -37,7 +37,7 @@ namespace seleniumPractice
         }
 
         [Test]
-        public void Site_InputValidEmail_EmailsAreEqualAndSendButtonIsHidden()
+        public void PetNameGenerator_InputValidEmail_EmailsAreEqualAndSendButtonIsHidden()
         {
             InputValidEmailAndSend();
             Assert.Multiple(() =>
@@ -48,7 +48,7 @@ namespace seleniumPractice
         }
         
         [Test]
-        public void Site_ClickAnotherEmail_AllResultTextIsHiddenAndEmailInputIsEmpty()
+        public void PetNameGenerator_ClickAnotherEmail_AllResultTextIsHiddenAndEmailInputIsEmpty()
         {
             InputValidEmailAndSend();
             driver.FindElement(anotherEmailLinkLocator).Click();
@@ -63,7 +63,7 @@ namespace seleniumPractice
         }
 
         [Test]
-        public void Site_ClickFemaleRadio_FemaleResultTextIsShown()
+        public void PetNameGenerator_ClickFemaleRadio_FemaleResultTextIsShown()
         {
             driver.FindElement(girlRadioLocator).Click();
             InputValidEmailAndSend();
@@ -71,7 +71,7 @@ namespace seleniumPractice
         }
         
         [Test]
-        public void Site_ClickMaleRadio_MaleResultTextIsShown()
+        public void PetNameGenerator_ClickMaleRadio_MaleResultTextIsShown()
         {
             driver.FindElement(boyRadioLocator).Click();
             InputValidEmailAndSend();
@@ -79,7 +79,7 @@ namespace seleniumPractice
         }
 
         [Test]
-        public void Site_InputDifferentValidEmails_Success()
+        public void PetNameGenerator_InputDifferentValidEmails_Success()
         {
             Assert.Multiple(() =>
             {
@@ -119,7 +119,7 @@ namespace seleniumPractice
         }
         
         [Test]
-        public void Site_InputDifferentInvalidEmails_Failure()
+        public void PetNameGenerator_InputDifferentInvalidEmails_Failure()
         {
             Assert.Multiple(() =>
             {
