@@ -13,20 +13,20 @@ namespace seleniumPractice
         public string validEmail = "example@email.com";
 
 
-        public By emailInputLocator = By.Name("email");
-        public By sendButtonLocator = By.Id("sendMe");
-        public By resultEmailTextLacator = By.ClassName("your-email");
-        public By anotherEmailLinkLocator = By.Id("anotherEmail");
-        public By boyRadioLocator = By.Id("boy");
-        public By girlRadioLocator = By.Id("girl");
-        public By resultTextLocator = By.ClassName("result-text");
-        
+        public By EmailInputLocator = By.Name("email");
+        public By SendButtonLocator = By.Id("sendMe");
+        public By ResultEmailTextLacator = By.ClassName("your-email");
+        public By AnotherEmailLinkLocator = By.Id("anotherEmail");
+        public By BoyRadioLocator = By.Id("boy");
+        public By GirlRadioLocator = By.Id("girl");
+        public By ResultTextLocator = By.ClassName("result-text");
+
         public void InputValidEmailAndSend()
         {
-            driver.FindElement(emailInputLocator).SendKeys(validEmail);
-            driver.FindElement(sendButtonLocator).Click();
+            driver.FindElement(EmailInputLocator).SendKeys(validEmail);
+            driver.FindElement(SendButtonLocator).Click();
         }
-        
+
         [SetUp]
         public void SetUp()
         {
@@ -42,40 +42,47 @@ namespace seleniumPractice
             InputValidEmailAndSend();
             Assert.Multiple(() =>
             {
-                Assert.AreEqual(validEmail, driver.FindElement(resultEmailTextLacator).Text, "Письмо отправлено не на тот email");
-                Assert.False(driver.FindElement(sendButtonLocator).Displayed, "Кнопка отправить не была скрыта после отправки формы");
+                Assert.AreEqual(validEmail, driver.FindElement(ResultEmailTextLacator).Text,
+                    "Письмо отправлено не на тот email");
+                Assert.False(driver.FindElement(SendButtonLocator).Displayed,
+                    "Кнопка отправить не была скрыта после отправки формы");
             });
         }
-        
+
         [Test]
         public void PetNameGenerator_ClickAnotherEmail_AllResultTextIsHiddenAndEmailInputIsEmpty()
         {
             InputValidEmailAndSend();
-            driver.FindElement(anotherEmailLinkLocator).Click();
+            driver.FindElement(AnotherEmailLinkLocator).Click();
             Assert.Multiple(() =>
             {
-                Assert.IsFalse(driver.FindElement(anotherEmailLinkLocator).Displayed, "Ссылка \"указать другой e-mail\" не исчезла после нажатия");
-                Assert.AreEqual(0, driver.FindElements(resultTextLocator).Count, "Ссылка \"указать другой e-mail\" не исчезла после нажатия");
-                Assert.AreEqual(0, driver.FindElements(resultEmailTextLacator).Count, "Текст с email не скрыт не исчезла после нажатия");
-                Assert.AreEqual(string.Empty, driver.FindElement(emailInputLocator).Text, "Поле для ввода почты не очистилось после нажатия на \"указать другой e-mail\"");
+                Assert.IsFalse(driver.FindElement(AnotherEmailLinkLocator).Displayed,
+                    "Ссылка \"указать другой e-mail\" не исчезла после нажатия");
+                Assert.AreEqual(0, driver.FindElements(ResultTextLocator).Count,
+                    "Ссылка \"указать другой e-mail\" не исчезла после нажатия");
+                Assert.AreEqual(0, driver.FindElements(ResultEmailTextLacator).Count,
+                    "Текст с email не скрыт не исчезла после нажатия");
+                Assert.AreEqual(string.Empty, driver.FindElement(EmailInputLocator).Text,
+                    "Поле для ввода почты не очистилось после нажатия на \"указать другой e-mail\"");
             });
-            
         }
 
         [Test]
         public void PetNameGenerator_ClickFemaleRadio_FemaleResultTextIsShown()
         {
-            driver.FindElement(girlRadioLocator).Click();
+            driver.FindElement(GirlRadioLocator).Click();
             InputValidEmailAndSend();
-            Assert.AreEqual("Хорошо, мы пришлём имя для вашей девочки на e-mail:", driver.FindElement(resultTextLocator).Text, "Неверное сообщение если выбрать женский вариант имени"); 
+            Assert.AreEqual("Хорошо, мы пришлём имя для вашей девочки на e-mail:",
+                driver.FindElement(ResultTextLocator).Text, "Неверное сообщение если выбрать женский вариант имени");
         }
-        
+
         [Test]
         public void PetNameGenerator_ClickMaleRadio_MaleResultTextIsShown()
         {
-            driver.FindElement(boyRadioLocator).Click();
+            driver.FindElement(BoyRadioLocator).Click();
             InputValidEmailAndSend();
-            Assert.AreEqual("Хорошо, мы пришлём имя для вашего мальчика на e-mail:", driver.FindElement(resultTextLocator).Text, "Неверное сообщение если выбрать мужской вариант имени"); 
+            Assert.AreEqual("Хорошо, мы пришлём имя для вашего мальчика на e-mail:",
+                driver.FindElement(ResultTextLocator).Text, "Неверное сообщение если выбрать мужской вариант имени");
         }
 
         [Test]
@@ -88,13 +95,13 @@ namespace seleniumPractice
                     "email@example.com",
                     "eMaiL@example.com",
                     "ачкак@example.com",
-                    "firstname.lastname@example.com", 
-                    "email@subdomain.example.com", 
-                    "firstname+lastname@example.com", 
-                    "email@123.123.123.123", 
-                    "email@[123.123.123.123]", 
-                    "\"email\"@example.com", 
-                    "1234567890@example.com", 
+                    "firstname.lastname@example.com",
+                    "email@subdomain.example.com",
+                    "firstname+lastname@example.com",
+                    "email@123.123.123.123",
+                    "email@[123.123.123.123]",
+                    "\"email\"@example.com",
+                    "1234567890@example.com",
                     "email@example-one.com",
                     "_______@example.com",
                     "email@example.name",
@@ -105,16 +112,17 @@ namespace seleniumPractice
                     "very.unusual.”@”.unusual.com@example.com",
                 })
                 {
-                    if (!driver.FindElement(sendButtonLocator).Displayed)
-                        driver.FindElement(anotherEmailLinkLocator).Click();
-                    driver.FindElement(emailInputLocator).Clear();
-                    driver.FindElement(emailInputLocator).SendKeys(email);
-                    driver.FindElement(sendButtonLocator).Click();
-                    Assert.IsFalse(driver.FindElement(sendButtonLocator).Displayed, "Отклонён валидный email: " + email);
+                    if (!driver.FindElement(SendButtonLocator).Displayed)
+                        driver.FindElement(AnotherEmailLinkLocator).Click();
+                    driver.FindElement(EmailInputLocator).Clear();
+                    driver.FindElement(EmailInputLocator).SendKeys(email);
+                    driver.FindElement(SendButtonLocator).Click();
+                    Assert.IsFalse(driver.FindElement(SendButtonLocator).Displayed,
+                        "Отклонён валидный email: " + email);
                 }
             });
         }
-        
+
         [Test]
         public void PetNameGenerator_InputDifferentInvalidEmails_Failure()
         {
@@ -147,16 +155,16 @@ namespace seleniumPractice
                     "longEmailThatProbablySouldntBeAllowedqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq@email.com",
                 })
                 {
-                    if (!driver.FindElement(sendButtonLocator).Displayed)
-                        driver.FindElement(anotherEmailLinkLocator).Click();
-                    driver.FindElement(emailInputLocator).Clear();
-                    driver.FindElement(emailInputLocator).SendKeys(email);
-                    driver.FindElement(sendButtonLocator).Click();
-                    Assert.IsTrue(driver.FindElement(sendButtonLocator).Displayed, "Принят невалидный email: " + email);
+                    if (!driver.FindElement(SendButtonLocator).Displayed)
+                        driver.FindElement(AnotherEmailLinkLocator).Click();
+                    driver.FindElement(EmailInputLocator).Clear();
+                    driver.FindElement(EmailInputLocator).SendKeys(email);
+                    driver.FindElement(SendButtonLocator).Click();
+                    Assert.IsTrue(driver.FindElement(SendButtonLocator).Displayed, "Принят невалидный email: " + email);
                 }
             });
         }
-        
+
         [TearDown]
         public void TearDown()
         {
